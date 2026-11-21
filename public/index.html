@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Legend Table</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/decks.js" defer></script>
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><div><span class="logo">✦</span> <strong>LEGEND TABLE</strong></div><span class="local">● &nbsp;SAVED ON THIS DEVICE</span></header>
+  <main>
+    <div id="notice" role="status" hidden></div>
+    <section id="home">
+      <div class="hero"><p class="eyebrow">PLAY A FRIEND OR THE ROBOT</p><h1>Protect your legend.<br><em>Claim the victory.</em></h1><p>Build your decks, gather your protectors, and take your place at the table.</p><button id="show-create" class="primary">Start a new game <span>→</span></button></div>
+      <div class="section-title"><div><p class="eyebrow">PICK UP WHERE YOU LEFT OFF</p><h2>Saved games</h2></div><span class="caption">Stored locally as JSON</span></div>
+      <div id="games" class="games"></div>
+    </section>
+    <section id="create" hidden>
+      <button class="back" data-action="home">← &nbsp; Back to games</button>
+      <p class="eyebrow">PREPARE FOR BATTLE</p><h1>Create a game</h1>
+      <p class="muted">Each player starts with an editable 100-card deck. Enter one card per line as <strong>Name, value</strong>. Each deck needs 5–200 cards and at least one card valued at 600 or less. Duplicate lines create separate cards.</p>
+      <form id="create-form">
+        <label class="first-label">Play against<select name="opponent"><option value="robot">Robot</option><option value="player">Another player (same device)</option></select></label>
+        <div class="deck-grid">
+          <div class="panel fire-panel"><p class="eyebrow">PLAYER ONE · FIRE DOG</p><label>Player name<input name="player1" required maxlength="60" value="Player 1"></label><label>Deck <span class="hint">One card per line</span><textarea name="deck1" required rows="10" placeholder="Forest Guardian, 300&#10;Silver Knight, 500"></textarea></label></div>
+          <div class="panel water-panel"><p class="eyebrow" id="opponent-heading">ROBOT · WATER DOG</p><label><span id="opponent-name-label">Robot name</span><input name="player2" required maxlength="60" value="Water Robot"></label><label>Deck <span class="hint">One card per line</span><textarea name="deck2" required rows="10" placeholder="Mountain Guardian, 400&#10;Golden Knight, 600"></textarea></label></div>
+        </div>
+        <label class="first-label">Who goes first?<select name="first"><option value="0">Player 1</option><option value="1" id="opponent-first">Robot</option></select></label>
+        <button class="primary" type="submit">Shuffle &amp; begin <span>→</span></button>
+      </form>
+    </section>
+    <section id="play" hidden>
+      <button class="back" data-action="home">← &nbsp; All games</button>
+      <div id="game-content"></div>
+    </section>
+  </main>
+  <footer>LEGEND TABLE <span>•</span> &nbsp;Made for game night</footer>
+</body>
+</html>
