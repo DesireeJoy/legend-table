@@ -25,11 +25,51 @@ function updateOpponentLabels() {
 fillStarterDecks();
 $('[name="opponent"]').addEventListener('change', updateOpponentLabels);
 
+const storageKey = 'legend-table-games';
+const { createGame, act, playRobot } = window.legendTableGame;
+
+function readGames() {
+  const raw = localStorage.getItem(storageKey);
+  if (!raw) return [];
+  const games = JSON.parse(raw);
+  if (!Array.isArray(games)) throw new Error('Saved games are invalid.');
+  return games;
+}
+
+function writeGames(games) {
+  localStorage.setItem(storageKey, JSON.stringify(games));
+}
+
 async function api(url, options = {}) {
-  const response = await fetch(url, { ...options, headers: { 'Content-Type': 'application/json' } });
-  const data = await response.json();
-  if (!response.ok) throw new Error(typeof data === 'string' ? data : 'The request failed.');
-  return data;
+  const games = readGames();
+  const parts = url.split('/').filter(Boolean);
+  if (parts[0] !== 'api' || parts[1] !== 'games') throw new Error('The requested game resource is invalid.');
+  const id = parts[2];
+  if (!id && (!options.method || options.method === 'GET')) return games;
+  if (!id && options.method === 'POST') {
+    const input = JSON.parse(options.body);
+    const savedGame = createGame(input);
+    playRobot(savedGame);
+    games.push(savedGame);
+    writeGames(games);
+    return savedGame;
+  }
+  const index = games.findIndex(item => item.id === id);
+  if (index < 0) throw new Error('Game not found.');
+  if (parts[3] === 'actions' && options.method === 'POST') {
+    const savedGame = games[index];
+    act(savedGame, JSON.parse(options.body));
+    playRobot(savedGame);
+    writeGames(games);
+    return savedGame;
+  }
+  if (parts.length === 3 && (!options.method || options.method === 'GET')) return games[index];
+  if (parts.length === 3 && options.method === 'DELETE') {
+    games.splice(index, 1);
+    writeGames(games);
+    return { ok: true };
+  }
+  throw new Error('The requested game action is invalid.');
 }
 
 function showError(error) {

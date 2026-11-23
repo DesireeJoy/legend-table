@@ -14,6 +14,14 @@ npm start
 
 Open the address printed in the terminal (normally `http://127.0.0.1:3000`). Keep the terminal open while playing. To use another port, set `PORT` before starting. The server listens only on this computer.
 
+## Host on GitHub Pages
+
+The browser client can also run as a static site on GitHub Pages. It stores saved games in that browser's `localStorage`, so each device has its own games and no Node.js server is needed.
+
+In the repository settings, open **Pages**, choose **GitHub Actions** as the source, and deploy the `public` folder. A workflow can publish the folder with the official GitHub Pages actions. Use relative asset paths as included in `public/index.html`, so the game works at a project-site URL such as `https://OWNER.github.io/REPOSITORY/`.
+
+GitHub Pages hosting is intended for the robot and same-device modes. It does not provide shared online multiplayer or server-side backups.
+
 ## Play
 
 1. Start a game, choose a robot or another player on the same device, enter both names, and select who goes first. Player 1 has a 100-card fire deck; Player 2 or the robot has a 100-card water deck. You can edit or replace either deck before starting: enter one card per line, such as `Forest Guardian, 300`. Each line is a separate card; duplicate lines are allowed. Each deck needs 5–200 cards, including at least one with a value of 600 or less. Values are positive whole numbers up to 1,000,000. Existing saved games keep their original decks.
